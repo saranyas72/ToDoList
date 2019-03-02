@@ -6,6 +6,7 @@ This application manages your ToDo list
 
 ## Design Diagram
 
-![class_diagram](https://github.com/saranyas72/ToDoList/blob/master/docs/ClassDiagram.jpeg "Logo Title Text 1")
+![class_diagram](https://github.com/saranyas72/ToDoList/blob/master/docs/ClassDiagram.jpeg)
 
 ## User Instructions
+
