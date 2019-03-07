@@ -27,7 +27,7 @@ public class ToDoList {
 		displayMenu();
 		int choice = scanner.nextInt();
 		
-		while (choice != 9) {
+		while (choice <= 10) {
 			
 			switch (choice) {
 				case 1: {
@@ -86,8 +86,15 @@ public class ToDoList {
 					break;
 				case 9:
 					break;
+				case 10: {
+					// Search a Task by Title
+					System.out.println("\nEnter the title to search: \n");
+					String title = input.nextLine();
+					manager.searchTaskByTitle(title);
+					break;
+				}
 				default: {
-					System.out.println("Your choice is invalid, enter choice 1 to 8 \n");
+					System.out.println("Your choice is invalid, enter choice 1 to 10 \n");
 					break;
 				}
 			}
@@ -102,7 +109,7 @@ public class ToDoList {
 			+ "Type 3 to to view list of pending tasks \n" + "Type 4  to view list of completed tasks \n"
 			+ "Type 5 to to view all tasks \n" + "Type 6 to update existing task in your list \n"
 			+ "Type 7 to mark all task as completed \n" + "Type 8 to Delete a task \n"
-			+ "Type 9 to exit the program \n" + "Select an option: \n");
+			+ "Type 9 to exit the program \n" + "Type 10 to search task by title \n" + "Select an option: \n");
 	
 	}
 }

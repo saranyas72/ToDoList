@@ -80,8 +80,13 @@ public class TaskManager {
 				            "Number of Completed Tasks : " + completedTasks.size() + "\n");
 	}
 	
-	public void searchTaskByTitle() {
+	
+	public void searchTaskByTitle(String titleToSearch) {
 		
+		List<Task> resultTask = taskList.stream()
+									.filter(task-> task.getTitle().contentEquals(titleToSearch))
+									.collect(Collectors.toList());
+		System.out.println(resultTask.toString());
 	}
 	
 	public void saveTasks() {

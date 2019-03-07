@@ -42,6 +42,12 @@ public class Task {
 	{
 		this.status=COMPLETED;
 	}
+	
+	public String getTitle()
+	{
+		return this.title;
+		
+	}
 
 	public String toString()
 	{
