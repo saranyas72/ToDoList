@@ -48,6 +48,12 @@ public class Task {
 		return this.title;
 		
 	}
+	
+	public Date getDueDate()
+	{
+		return this.dueDate;
+		
+	}
 
 	public String toString()
 	{
