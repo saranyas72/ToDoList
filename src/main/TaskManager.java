@@ -5,7 +5,9 @@
 
 package main;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,9 @@ public class TaskManager {
 	
 	ArrayList<Task> taskList = new ArrayList<>();
 	Datastore store;
+	
+	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+	Date date;
 	
 	public TaskManager(Datastore store) {
 		this.store = store;
@@ -86,9 +91,24 @@ public class TaskManager {
 		List<Task> resultTask = taskList.stream()
 									.filter(task-> task.getTitle().contentEquals(titleToSearch))
 									.collect(Collectors.toList());
-		System.out.println(resultTask.toString());
+		printTask(resultTask);
 	}
 	
+	// Search Task by Due Date
+	public void searchTaskByDueDate(Date dueDate) {
+		
+		List<Task> resultTask = taskList.stream().filter(task -> task.getDueDate().equals(dueDate))
+				.collect(Collectors.toList());
+		printTask(resultTask);
+	}
+	
+	// Print list of Tasks
+	public void printTask(List<Task> taskList) {	
+		for(Task task : taskList) {
+			System.out.println(task.toString());
+		}
+	}
+
 	public void saveTasks() {
 		
 	}

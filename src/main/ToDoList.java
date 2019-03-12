@@ -20,19 +20,19 @@ public class ToDoList {
 		Datastore store = new Datastore();
 		TaskManager manager = new TaskManager(store);
 		
-		System.out.println("Good day from your ToDo List!! \n"
-				+ "Your ToDo Status - \n" + "Pending Tasks in hand:" + 5 + "\n" + "completed Tasks:" + 5 + "\n");
+		System.out.println("Good day from your ToDo List!! \n");
+		manager.viewTaskStatus();
 		
 
 		displayMenu();
 		int choice = scanner.nextInt();
 		
-		while (choice <= 10) {
+		while (choice <= 11) {
 			
 			switch (choice) {
 				case 1: {
 					// add a new task to your list 
-					System.out.println("\nEnter the task details, except title other fields can be blank \n");
+					System.out.println("Enter the task details, except title other fields can be blank");
 					String[] taskProperties = {"Title", "Description", "Due Date"};
 					String[] taskValues= new String[taskProperties.length];
 					for (int i=0;i<taskProperties.length; i++)
@@ -93,6 +93,16 @@ public class ToDoList {
 					manager.searchTaskByTitle(title);
 					break;
 				}
+				
+				case 11: {
+					// Search a Task by Title
+					System.out.println("\nEnter the due date to search: \n");
+					String dateInput = input.nextLine();;
+					Date due = format.parse(dateInput);
+					manager.searchTaskByDueDate(due);
+					break;
+				}
+				
 				default: {
 					System.out.println("Your choice is invalid, enter choice 1 to 10 \n");
 					break;
@@ -109,7 +119,8 @@ public class ToDoList {
 			+ "Type 3 to to view list of pending tasks \n" + "Type 4  to view list of completed tasks \n"
 			+ "Type 5 to to view all tasks \n" + "Type 6 to update existing task in your list \n"
 			+ "Type 7 to mark all task as completed \n" + "Type 8 to Delete a task \n"
-			+ "Type 9 to exit the program \n" + "Type 10 to search task by title \n" + "Select an option: \n");
+			+ "Type 9 to exit the program \n" + "Type 10 to search task by title \n" 
+			+ "Type 11 to search task by due date \n" + "Select an option: \n");
 	
 	}
 }
