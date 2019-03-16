@@ -11,24 +11,32 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class ToDoList {
-
+	
+	// set classes to read user input
 	static Scanner input = new Scanner(System.in);
 	static Scanner scanner = new Scanner(System.in);
+	
+	// Initial settings for the project
 	static SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-	public static void main(String[] args) throws ParseException {
+	
+	public static void main(String[] args) throws Exception {
 		
-		Datastore store = new Datastore();
-		TaskManager manager = new TaskManager(store);
-		
+		// Greetings from application
 		System.out.println("Good day from your ToDo List!! \n");
+		
+		// Initiate required classes
+		Datastore store = new Datastore();
+		AppManager manager = new AppManager(store);
+				
+		// display number of pending and completed tasks
 		manager.viewTaskStatus();
 		
-
+		// Display available options and accept user response
 		displayMenu();
-		int choice = scanner.nextInt();
 		
-		while (choice <= 11) {
-			
+		// Handle user interaction here --
+		int choice = scanner.nextInt();
+		while (choice <= 13) {
 			switch (choice) {
 				case 1: {
 					// add a new task to your list 
@@ -102,6 +110,19 @@ public class ToDoList {
 					manager.searchTaskByDueDate(due);
 					break;
 				}
+				case 12: {
+					// Save the Task
+					
+					manager.saveTasks();
+					break;
+				}
+				case 13: {
+					// Save the Task
+					
+					manager.loadTasks();
+					break;
+				}
+				
 				
 				default: {
 					System.out.println("Your choice is invalid, enter choice 1 to 10 \n");
@@ -112,6 +133,8 @@ public class ToDoList {
 			choice = scanner.nextInt();
 		}
 	}
+	
+	// Available Menu items to display
 	public static void displayMenu()
 	{
 	System.out.println("\n Menu \n **** \n"
