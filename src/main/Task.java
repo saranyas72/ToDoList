@@ -4,13 +4,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Task {
 	private static final AtomicInteger count = new AtomicInteger(0);
 	public Integer id;
 	public String title, description, status;
 	public static final String PENDING = "pending";
 	public static final String COMPLETED = "completed";
-	Date createdDate, modifiedDate, dueDate;
+	public Date createdDate, modifiedDate, dueDate;
 	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	Date date;
 	
@@ -32,6 +36,7 @@ public class Task {
 	}
 	
 	// Verify a task is pending and returns boolean value
+	@JsonProperty(value="isPending")
 	public boolean isPending()
 	{
 		return status.contains(PENDING);
@@ -39,6 +44,7 @@ public class Task {
 	}
 	
 	// Verify a task is completed and returns boolean value
+	@JsonProperty(value="isCompleted")
 	public boolean isCompleted()
 	{
 		return status.contains(COMPLETED);

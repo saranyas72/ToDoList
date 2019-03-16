@@ -5,11 +5,15 @@
 
 package main;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AppManager {
@@ -139,7 +143,19 @@ public class AppManager {
 	}
 	
 	// Retrieve tasks from file
-	public void loadTasks() {
+	public void loadTasks() throws IOException {
+		System.out.println("Retrieving Tasks from a file");
+		if(store.fileExists(taskData)<=0) {
+			System.out.println("File '"+taskData+"' does not exists");
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		Task[] taskArray = mapper.readValue(store.readFile(taskData), Task[].class);
 		
+		taskList = new ArrayList<>(Arrays.asList(taskArray));
+		
+		System.out.println("size:" + taskList.size());
+		viewAllTasks();
 	}
 }

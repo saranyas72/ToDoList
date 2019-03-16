@@ -36,7 +36,7 @@ public class ToDoList {
 		
 		// Handle user interaction here --
 		int choice = scanner.nextInt();
-		while (choice <= 12) {
+		while (choice <= 13) {
 			switch (choice) {
 				case 1: {
 					// add a new task to your list 
@@ -116,6 +116,13 @@ public class ToDoList {
 					manager.saveTasks();
 					break;
 				}
+				case 13: {
+					// Save the Task
+					
+					manager.loadTasks();
+					break;
+				}
+				
 				
 				default: {
 					System.out.println("Your choice is invalid, enter choice 1 to 10 \n");

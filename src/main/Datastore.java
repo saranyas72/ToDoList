@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Datastore {
@@ -19,20 +20,19 @@ public class Datastore {
 		}
 		
 		// create file to store project details
-		if (fileExists(filePath(projectData)) <= 0) {
+		if (fileExists(projectData) <= 0) {
 			Files.createFile(filePath(projectData));
 		}
 		
 		// create file to store task details
-		if (fileExists(filePath(taskData)) <= 0) {
+		if (fileExists(taskData) <= 0) {
 			Files.createFile(filePath(taskData));
 		}
 	}
 	
 	// read data from a file
-	public List<String> readFile(String file) throws IOException {
-		List<String> lines = Files.readAllLines(Paths.get(file));
-        return lines;
+	public String readFile(String file) throws IOException {
+		return Files.readString(filePath(file));
 	}
 		
 	// Write data to a file, create file if the file does not exists
@@ -54,7 +54,7 @@ public class Datastore {
 
 	}
 	
-	public long fileExists(Path path) throws IOException {
+	public long fileExists(String file) throws IOException {
 		return Files.walk(dir)
 	     .filter(Files::exists).count();
 	}
