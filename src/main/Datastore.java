@@ -54,8 +54,10 @@ public class Datastore {
 
 	}
 	
-	public long fileExists(String file) throws IOException {
+	public long fileExists(String filename) throws IOException {
 		return Files.walk(dir)
-	     .filter(Files::exists).count();
+	     .filter(file -> {
+	    	 return file.getFileName().toString().equals(filename);
+	     }).count();
 	}
 }

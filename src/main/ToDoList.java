@@ -21,13 +21,13 @@ public class ToDoList {
 	
 	public static void main(String[] args) throws Exception {
 		
-		// Initiate required classes
-		Datastore store = new Datastore();
-		AppManager manager = new AppManager(store);
-		
 		// Greetings from application
 		System.out.println("Good day from your ToDo List!! \n");
 		
+		// Initiate required classes
+		Datastore store = new Datastore();
+		AppManager manager = new AppManager(store);
+				
 		// display number of pending and completed tasks
 		manager.viewTaskStatus();
 		

@@ -28,8 +28,9 @@ public class AppManager {
 	Date date;
 	
 	// This constructor will initiate Datastore
-	public AppManager(Datastore store) {
+	public AppManager(Datastore store) throws IOException {
 		this.store = store;
+		loadTasks();
 	}
 	
 	// This method will take Task class as parameter and create task.
@@ -148,14 +149,14 @@ public class AppManager {
 		if(store.fileExists(taskData)<=0) {
 			System.out.println("File '"+taskData+"' does not exists");
 		}
+		
+		String taskJson = store.readFile(taskData);
 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		Task[] taskArray = mapper.readValue(store.readFile(taskData), Task[].class);
-		
-		taskList = new ArrayList<>(Arrays.asList(taskArray));
-		
-		System.out.println("size:" + taskList.size());
-		viewAllTasks();
+		if (!taskJson.isEmpty()) {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			Task[] taskArray = mapper.readValue(taskJson, Task[].class);
+			taskList = new ArrayList<>(Arrays.asList(taskArray));	
+		}
 	}
 }
