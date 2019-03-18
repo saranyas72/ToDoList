@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,36 +21,39 @@ public class AppManager {
 	
 	String taskData = "TaskData";
 	ArrayList<Task> taskList = new ArrayList<>();
-	ArrayList<String> projectList = new ArrayList<>();
+	ArrayList<Project> projectList = new ArrayList<>();
 	
 	Datastore store;
 	
 	SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 	Date date;
 	
-	// This constructor will initiate Datastore
-	public AppManager(Datastore store) throws IOException {
+	public AppManager(Datastore store) throws Exception {
 		this.store = store;
 		loadTasks();
+		loadProject();
 	}
 	
-	// This method will take Task class as parameter and create task.
+	// create a project and add it to project list
+	public void createProject(Project project) {	
+		projectList.add(project);
+	}
+	
 	public void addTask(Task task) {	
 		taskList.add(task);
-
 	}
 	
-	// This method updates the Task.
+	// updates the Task
 	public void updateTask() {
 
 	}
 	
-	// This method will delete the Task.
+	// delete the Task
 	public void deleteTask() {
 
 	}
 	
-	// This method sets status as 'complete' for all the tasks.
+	// set status as 'complete' for all the tasks.
 	public void markAllTasksCompleted() {
 		taskList.stream()
 			.map(task -> {
@@ -58,7 +62,7 @@ public class AppManager {
 			}).collect(Collectors.toList());
 	}
 	
-	// This method filters task status with value as Pending and display result on screen
+	// filter task with pending status and print
 	public void viewPendingTasks() {
 		taskList.stream().map(task -> {
 			if(task.isPending()) {
@@ -68,7 +72,7 @@ public class AppManager {
 		}).collect(Collectors.toList());
 	}
 
-	// This method filters task status with value as completed and display result on screen
+	// filter task with completed status and print
 	public void viewCompletedTasks() {
 		taskList.stream()
 		.map(task -> {
@@ -79,14 +83,21 @@ public class AppManager {
 		}).collect(Collectors.toList());
 	}
 	
-	// This method display all the available task on screen
+	// display all tasks
 	public void viewAllTasks() {
 		for(Task task : taskList) {
 			System.out.println(task.toString());
 		}
 	}
 	
-	// This method shows number of pending and completed tasks.
+	// display all project
+	public void viewAllProject() {
+		for(Project project : projectList) {
+			System.out.println(project.getName());
+		}
+	}
+	
+	// print number of pending and completed tasks.
 	public void viewTaskStatus() {
 		List<Task> pendingTasks = taskList.stream()
 				.filter(task -> task.isPending())
@@ -102,31 +113,74 @@ public class AppManager {
 				            "Number of Completed Tasks : " + completedTasks.size() + "\n");
 	}
 	
-	// This method allows users to search tasks by title
+	// search tasks by title
 	public void searchTaskByTitle(String titleToSearch) {
 		
 		List<Task> resultTask = taskList.stream()
 									.filter(task-> task.getTitle().contentEquals(titleToSearch))
 									.collect(Collectors.toList());
-		printTask(resultTask);
-	}
-	
-	// This method allows users to search tasks by due date
-	public void searchTaskByDueDate(Date dueDate) {
-		
-		List<Task> resultTask = taskList.stream().filter(task -> task.getDueDate().equals(dueDate))
-				.collect(Collectors.toList());
-		printTask(resultTask);
-	}
-	
-	// Print list of all the Tasks
-	public void printTask(List<Task> taskList) {	
-		for(Task task : taskList) {
-			System.out.println(task.toString());
+		if(resultTask.isEmpty()) {
+			System.out.println("No results found");
+		} 
+		else {
+			printTask(resultTask);
 		}
 	}
-
-	// Save tasks to file
+	
+	// search tasks by due date
+	public void searchTaskByDueDate(Date dueDate) {
+		List<Task> resultTask = taskList.stream()
+				.filter(task -> {
+					if(task.getDueDate() != null)
+						{
+						return task.getDueDate().equals(dueDate);
+						}
+					return false;
+				}).collect(Collectors.toList());
+			printTask(resultTask);
+	}
+	
+	// print list of all the Tasks
+	public void printTask(List<Task> taskList) {
+		if(taskList.isEmpty())
+		{
+			System.out.println("No results found");
+		} else {
+			for(Task task : taskList) {
+				System.out.println(task.toString());
+			}
+		}
+	}
+	
+	// verify project name exists
+	public boolean projectExists(String projectName) {	
+		 return projectList.stream()
+			.anyMatch(project -> project.getName().contentEquals(projectName));
+	}
+	
+	// rename a project name
+	public void renameProject(String oldName, String newName) {	
+		projectList.stream()
+			.map(project -> 
+			{
+				if(project.getName().contentEquals(oldName)) {
+					project.setName(newName);
+				}
+			return project;
+			}).collect(Collectors.toList());
+		
+		// rename the project in Tasklist
+		taskList.stream()
+			.map(task -> 
+			{
+				if(task.getProjectName().contentEquals(oldName)) {
+					task.setProjectName(newName);
+				}
+			return task;
+		}).collect(Collectors.toList());
+	}
+	
+	// save tasks to file
 	public boolean saveTasks() throws Exception {
 		System.out.println("Saving Tasks to a file");
 		if(taskList.isEmpty()) {
@@ -138,12 +192,11 @@ public class AppManager {
 		String jsonResult = mapper.writeValueAsString(taskList);
 		
 		this.store.writeToFile(taskData, jsonResult);
-		
-		System.out.println(jsonResult);
+		System.out.println("Tasks Saved");
 		return true;
 	}
 	
-	// Retrieve tasks from file
+	// retrieve tasks from file
 	public void loadTasks() throws IOException {
 		System.out.println("Retrieving Tasks from a file");
 		if(store.fileExists(taskData)<=0) {
@@ -156,7 +209,19 @@ public class AppManager {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			Task[] taskArray = mapper.readValue(taskJson, Task[].class);
-			taskList = new ArrayList<>(Arrays.asList(taskArray));	
+			taskList = new ArrayList<>(Arrays.asList(taskArray));
+		
 		}
+	}
+	
+	// retrieve project list from tasklist read from file
+	public void loadProject() throws Exception {
+		taskList.stream()
+		.map(tasks -> {
+			String projectName = tasks.getProjectName();
+			createProject(new Project(projectName));
+		return projectName;
+		})
+		.collect(Collectors.toList());
 	}
 }

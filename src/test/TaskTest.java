@@ -46,11 +46,12 @@ public class TaskTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		
+		String project = "project1";
 		String title = "title";
 		String description = "";
 		Date dueDate =format.parse("10-03-2019");
 		
-		new Task(title, description, dueDate);
+		new Task(project, title, description, dueDate);
 	}
 
 	/**
