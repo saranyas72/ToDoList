@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +43,7 @@ public class AppManager {
 	}
 	
 	// updates the Task
-	public void updateTask() {
+	public void updateTask(String fieldToUpdate, String currValue, String newValue) {
 
 	}
 	
@@ -138,6 +137,25 @@ public class AppManager {
 					return false;
 				}).collect(Collectors.toList());
 			printTask(resultTask);
+	}
+
+	// search tasks by project
+	public void searchTaskByProject(String projectName) {
+		List<Task> resultTask = taskList.stream()
+				.filter(task -> task.getProjectName().equals(projectName))
+				.collect(Collectors.toList());
+			printTask(resultTask);
+	}
+	// search tasks by title
+	public void sortTaskByProject() {
+		taskList.sort((task1, task2) -> task1.getProjectName().compareTo(task2.getProjectName()));
+		viewAllTasks();
+	}
+	
+	// search tasks by due date
+	public void sortTaskByDueDate() {
+		taskList.sort((task1, task2) -> task1.getDueDate().compareTo(task2.getDueDate()));
+		viewAllTasks();	
 	}
 	
 	// print list of all the Tasks

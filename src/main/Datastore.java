@@ -2,26 +2,17 @@ package main;
 
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Datastore {
 	
 	private static String userHome = System.getProperty("user.home");
 	static Path dir = Paths.get(userHome + "/TodoList");
-	
-	String projectData = "ProjectData";
 	String taskData = "TaskData";
 	public Datastore() throws IOException {
 		
 		// create application specific directory to store data/files.
 		if (!Files.exists(dir)) {
 			Files.createDirectory(dir);	
-		}
-		
-		// create file to store project details
-		if (fileExists(projectData) <= 0) {
-			Files.createFile(filePath(projectData));
 		}
 		
 		// create file to store task details

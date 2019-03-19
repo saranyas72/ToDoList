@@ -92,10 +92,10 @@ public class ToDoList {
 					System.out.println("Below is the available list of projects, select a project");
 					manager.viewAllProject();
 					System.out.println("Enter the project name to rename");
-					String oldName = input.nextLine();
+					String currName = input.nextLine();
 					System.out.println("Enter the new name for the project");
 					String newName = input.nextLine();
-					manager.renameProject(oldName, newName);
+					manager.renameProject(currName, newName);
 					manager.saveTasks();
 					break;
 				}
@@ -126,14 +126,21 @@ public class ToDoList {
 				}
 				case 9: {
 					// view all tasks sorted by project name
+					manager.sortTaskByProject();
 					break;
 				}
 				case 10: {
 					// view all tasks sorted by due date
+					manager.sortTaskByDueDate();
 					break;
 				}
 				case 11: {
 					// update existing task in your list
+					System.out.println("Enter field to update - Title / ");
+					String currName = input.nextLine();
+					System.out.println("Enter the new name for the project");
+					String newName = input.nextLine();
+//					manager.updateTask(fieldToUpdate,currValue, newValue);
 					break;
 				}
 				case 12: {
@@ -156,9 +163,13 @@ public class ToDoList {
 					manager.searchTaskByDueDate(due);
 					break;
 				}
-				case 15:
+				case 15: {
 					// search task by project
+					System.out.println("Enter the project name: \n");
+					String projectName = input.nextLine();
+					manager.searchTaskByProject(projectName);
 					break;
+				}
 				case 16:
 					// delete a task
 					
