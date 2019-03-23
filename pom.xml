@@ -15,21 +15,46 @@
 					<release>11</release>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>main.ToDoList</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<!-- get all project dependencies -->
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<!-- MainClass in mainfest make a executable jar -->
+					<archive>
+						<manifest>
+							<mainClass>main.ToDoList</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
-		<dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>google-cloud-storage</artifactId>
-			<version>1.65.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.google.code.gson</groupId> -->
-		<!-- <artifactId>gson</artifactId> -->
-		<!-- <version>2.8.5</version> -->
-		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -47,20 +72,5 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.8</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.junit.jupiter</groupId> -->
-		<!-- <artifactId>junit-jupiter-api</artifactId> -->
-		<!-- <version>5.4.0</version> -->
-		<!-- <scope>test</scope> -->
-		<!-- </dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.junit.jupiter</groupId> -->
-		<!-- <artifactId>junit-jupiter-engine</artifactId> -->
-		<!-- <version>5.4.0</version> -->
-		<!-- <scope>test</scope> -->
-		<!-- </dependency> -->
 	</dependencies>
 </project>
