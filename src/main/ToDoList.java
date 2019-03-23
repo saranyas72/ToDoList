@@ -78,6 +78,7 @@ public class ToDoList {
 						if(input.nextLine().equalsIgnoreCase("Y")){
 							manager.createProject(new Project(projectName));
 							manager.addTask(new Task(projectName,taskValues[0],taskValues[1],dueDate));
+							System.out.println("Created project " + projectName + " and added task to it !");
 							manager.saveTasks();
 						} else {
 							System.out.println("Your choice is not 'Y', terminating the task creation.."
@@ -96,7 +97,6 @@ public class ToDoList {
 					System.out.println("Enter the new name for the project");
 					String newName = input.nextLine();
 					manager.renameProject(currName, newName);
-					manager.saveTasks();
 					break;
 				}
 				case 4: {
@@ -136,11 +136,32 @@ public class ToDoList {
 				}
 				case 11: {
 					// update existing task in your list
-					System.out.println("Enter field to update - Title / ");
-					String currName = input.nextLine();
-					System.out.println("Enter the new name for the project");
-					String newName = input.nextLine();
-//					manager.updateTask(fieldToUpdate,currValue, newValue);
+					System.out.println("Below are the list of project, enter a project name where you would like to update the task ");
+					manager.viewAllProject();
+					String projectName = input.nextLine();
+					if(!manager.projectExists(projectName))
+					  {
+						System.out.println("Project does not exists!!..Enter a valid project name from the list");
+						manager.viewAllProject();
+						projectName = input.nextLine();
+					  }
+					System.out.println("Below are available tasks, enter the task tile to select a task for modification");
+					manager.searchTaskByProject(projectName);
+					String taskTitle = input.nextLine();
+					
+					System.out.println("To update a task \n"
+							+ "1. update title \n"
+							+ "2. update description \n"
+							+ "3. update due date \n"
+							+ "4. update status \n"
+							+ "Enter your choice as 1/2/3/4 \n");
+					int selection = Integer.parseInt(input.nextLine());
+					String[] fieldToUpdate = {"Title", "Description", "Due Date", "Status"};
+						
+					System.out.println("Enter new value for "+ fieldToUpdate[selection-1]);
+					String valueToUpdate = input.nextLine();
+						manager.updateTask(projectName, taskTitle, fieldToUpdate[selection-1], valueToUpdate);
+		
 					break;
 				}
 				case 12: {
@@ -170,11 +191,31 @@ public class ToDoList {
 					manager.searchTaskByProject(projectName);
 					break;
 				}
-				case 16:
+				case 16: {
 					// delete a task
+					System.out.println("Below are the list of project, enter a project name where you would like to delete a task ");
+					manager.viewAllProject();
+					String projectName = input.nextLine();
+					if(!manager.projectExists(projectName))
+					  {
+						System.out.println("Project does not exists!!..Enter a valid project name from the list");
+						manager.viewAllProject();
+						projectName = input.nextLine();
+					  }
+					System.out.println("Below are available tasks, enter the task tile to delete");
+					manager.searchTaskByProject(projectName);
+					String taskTitle = input.nextLine();
 					
+					manager.deleteTask(projectName,taskTitle);
+					break;
+				}
 				case 17: {
 					// delete a project and the associated tasks
+					System.out.println("This option will delete a project and all the associated tasks");
+					System.out.println("List of project, enter a project name to delete");
+					manager.viewAllProject();
+					String projectName = input.nextLine();
+					manager.deleteProject(projectName);
 					break;
 				}
 				

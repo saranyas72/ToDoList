@@ -100,6 +100,11 @@ public class Task {
 	{
 		this.status=COMPLETED;
 	}
+	// set task status to completed
+	public void markTaskPending()
+	{
+		this.status=PENDING;
+	}
 	
 	// overriding a string method to display collections as string
 	public String toString()
